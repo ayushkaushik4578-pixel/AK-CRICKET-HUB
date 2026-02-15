@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AK Toss & Order</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:#1e8c4a;
+    color:white;
+    text-align:center;
+}
+
+h1{
+    padding:15px;
+}
+
+button{
+    padding:12px 18px;
+    margin:10px;
+    font-size:16px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+input{
+    padding:8px;
+    margin:5px;
+    border-radius:5px;
+    border:none;
+}
+
+.section{
+    display:none;
+    padding:20px;
+}
+
+.active{
+    display:block;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🏏 AK Cricket - Toss & Order</h1>
+
+<div id="home" class="active">
+    <button onclick="openToss()">🪙 Toss</button>
+    <button onclick="openOrder()">🔢 Player Order</button>
+</div>
+
+<div id="toss" class="section">
+    <h2>🪙 Toss</h2>
+    <button onclick="flipCoin('Head')">Head</button>
+    <button onclick="flipCoin('Tail')">Tail</button>
+    <p id="tossResult"></p>
+    <button onclick="goHome()">Back</button>
+</div>
+
+<div id="order" class="section">
+    <h2>🔢 Player Order</h2>
+    <p>Enter names separated by comma</p>
+    <input type="text" id="names" placeholder="Ayush,Rahul,Aman">
+    <br>
+    <button onclick="generateOrder()">Generate Order</button>
+    <div id="orderResult"></div>
+    <button onclick="goHome()">Back</button>
+</div>
+
+<script>
+
+function openToss(){
+    document.getElementById("home").style.display="none";
+    document.getElementById("order").style.display="none";
+    document.getElementById("toss").style.display="block";
+}
+
+function openOrder(){
+    document.getElementById("home").style.display="none";
+    document.getElementById("toss").style.display="none";
+    document.getElementById("order").style.display="block";
+}
+
+function goHome(){
+    document.getElementById("toss").style.display="none";
+    document.getElementById("order").style.display="none";
+    document.getElementById("home").style.display="block";
+}
+
+function flipCoin(choice){
+    let result = Math.random() < 0.5 ? "Head" : "Tail";
+    if(choice === result){
+        document.getElementById("tossResult").innerText = "Result: " + result + " (You Won!)";
+    } else {
+        document.getElementById("tossResult").innerText = "Result: " + result + " (You Lost)";
+    }
+}
+
+function generateOrder(){
+    let input = document.getElementById("names").value;
+    let players = input.split(",");
+
+    // Remove extra spaces
+    players = players.map(name => name.trim());
+
+    // Shuffle
+    for(let i = players.length - 1; i > 0; i--){
+        let j = Math.floor(Math.random() * (i + 1));
+        [players[i], players[j]] = [players[j], players[i]];
+    }
+
+    let output = "<h3>Batting Order:</h3>";
+    for(let i = 0; i < players.length; i++){
+        output += (i+1) + "️⃣ " + players[i] + "<br>";
+    }
+
+    document.getElementById("orderResult").innerHTML = output;
+}
+
+</script>
+
+</body>
+</html>
